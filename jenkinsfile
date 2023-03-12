@@ -8,7 +8,7 @@ pipeline{
     stages{
         stage('vcs') {
             steps{
-            git branch : 'main', 
+            git branch : 'master', 
             url: 'https://github.com/rohi3369/StudentCoursesRestAPI.git'
             }
         }
