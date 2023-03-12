@@ -1,0 +1,30 @@
+pipeline{
+    agent {label 'mvn'}
+    triggers { pollSCM(('* * * * *')}
+    environment {
+        REPO_URL="sai3369"
+        dockerhub=credentials('dockerhub') 
+    } 
+    stages{
+        stage('vcs') {
+            steps{
+            git branch : 'main', 
+            url: 'https://github.com/rohi3369/StudentCoursesRestAPI.git'
+            }
+        }
+        stage('build image'){
+            steps{
+                script{
+                    sh """ docker image build -t ${env.REPO_URL}/student:${env.BUILD_NUMBER} .
+                    """
+                }
+            }
+        }
+        stage('Pushing image') {
+            steps{
+                sh'echo $dockerhub_PSW | docker login -u $dockerhub_USR --password-stdin'
+                sh"docker image push ${env.REPO_URL}/spc:${env.BUILD_NUMBER}"
+            }       
+        }
+    }
+}
