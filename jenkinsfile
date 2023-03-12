@@ -1,6 +1,8 @@
 pipeline{
     agent {label 'mvn'}
-    triggers { pollSCM(('* * * * *')}
+    triggers { 
+    pollSCM('* * * * *')
+    }
     environment {
         REPO_URL="sai3369"
         dockerhub=credentials('dockerhub') 
